@@ -52,6 +52,7 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
                     Snackbar.make(requireView(), "Oops! Something went wrong, pleasue check internet connection", Snackbar.LENGTH_LONG).show()
                 }
             }
+            viewModel.feedStatus.postValue(null)
         })
         viewModel.detailStatus.observe(viewLifecycleOwner, Observer { status ->
             when (status) {
@@ -62,6 +63,7 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
                     Snackbar.make(requireView(), "Oops! Something went wrong, pleasue check internet connection", Snackbar.LENGTH_LONG).show()
                 }
             }
+            viewModel.detailStatus.postValue(null)
         })
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.articleEvent.collect { event ->

@@ -1,0 +1,28 @@
+## Priorities
+- Rewrite architecture to support coroutines + databindings
+- Implement RoomDB and a repository for offline caching
+- Hook up dependency injection
+- Replace single activity with NavHostFragment
+
+## New User Features
+- Local caching of articles 
+- Articles can be favourited
+- Articles can be filtered to show only favourites
+
+## New Tech 
+- RoomDB
+- Dagger Hilt
+- Navigation component
+- Databindings
+- Coroutines
+- Safe Args
+- ListAdapter
+
+## To Do
+- Hook up DI for detailFragment viewModel
+- Favouriting articles from detailFragment
+- Unit & Integration tests
+- Advanced filters
+	- Article sections
+	- Article title query search
+	- Sort by date - ASC/DESC

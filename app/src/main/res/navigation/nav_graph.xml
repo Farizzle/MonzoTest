@@ -9,7 +9,7 @@
         android:id="@+id/articleListFragment"
         android:name="com.monzo.androidtest.ui.articlelists.ArticleListFragment"
         android:label="The Guardian"
-        tools:layout="@layout/fragment_article_list" >
+        tools:layout="@layout/fragment_article_list">
         <action
             android:id="@+id/action_articleListFragment_to_articleDetailFragment"
             app:destination="@id/articleDetailFragment" />
@@ -18,7 +18,7 @@
         android:id="@+id/articleDetailFragment"
         android:name="com.monzo.androidtest.ui.articledetail.ArticleDetailFragment"
         android:label="Article"
-        tools:layout="@layout/fragment_article_detail" >
+        tools:layout="@layout/fragment_article_detail">
         <argument
             android:name="article"
             app:argType="com.monzo.androidtest.domain.Article" />

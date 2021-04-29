@@ -1,17 +1,15 @@
 package com.monzo.androidtest.ui.articlelists
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
-import com.monzo.androidtest.api.GuardianApiStatus
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.monzo.androidtest.database.ArticleDao
-import com.monzo.androidtest.database.PreferencesManager
-import com.monzo.androidtest.database.model.asDomainModel
 import com.monzo.androidtest.domain.Article
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class ArticlesViewModel @ViewModelInject constructor(

@@ -5,4 +5,4 @@ import com.monzo.androidtest.domain.Article
 
 //Todo
 // Not quiet sure how to use Hilt to generate a ViewModel that requires a factory
-class ArticleDetailViewModel (val article: Article) : ViewModel()
+class ArticleDetailViewModel(val article: Article) : ViewModel()

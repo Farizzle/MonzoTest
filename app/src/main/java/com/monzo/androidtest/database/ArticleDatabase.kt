@@ -21,5 +21,5 @@ interface ArticleDao {
     fun getArticles(showFavourites: Boolean = false): Flow<List<DBArticle>>
 
     @Query("SELECT * FROM article_table WHERE id == :articleId")
-    fun getSingleArticle(articleId: String) : Flow<DBArticle>
+    fun getSingleArticle(articleId: String): Flow<DBArticle>
 }

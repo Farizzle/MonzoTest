@@ -1,24 +1,18 @@
 package com.monzo.androidtest.di
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.monzo.androidtest.R
 import com.monzo.androidtest.api.GuardianService
 import com.monzo.androidtest.database.ArticleDatabase
-import com.monzo.androidtest.ui.articledetail.ArticleDetailViewModel
-import com.monzo.androidtest.ui.articlelists.ArticlesViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import dagger.multibindings.IntoMap
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response

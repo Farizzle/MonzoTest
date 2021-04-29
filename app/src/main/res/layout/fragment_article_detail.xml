@@ -12,8 +12,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:overScrollMode="never"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,14 +39,14 @@
 
             <TextView
                 android:id="@+id/article_body"
+                httpText="@{articleDetailViewModel.article.body}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/roboto"
-                tools:text="Article body"
-                httpText="@{articleDetailViewModel.article.body}"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                tools:text="Article body" />
 
         </LinearLayout>
     </ScrollView>

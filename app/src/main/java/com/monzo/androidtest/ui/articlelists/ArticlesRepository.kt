@@ -37,12 +37,12 @@ class ArticlesRepository @Inject constructor(
             articleForThisWeek(it)
         }
     }
-    val lastWeeksArticles = Transformations.map(articles.asLiveData()) {articles ->
+    val lastWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
         articles.asDomainModel().filter {
             articleForLastWeek(it)
         }
     }
-    val olderArticles = Transformations.map(articles.asLiveData()) {articles ->
+    val olderArticles = Transformations.map(articles.asLiveData()) { articles ->
         articles.asDomainModel().filter {
             oldArticle(it)
         }

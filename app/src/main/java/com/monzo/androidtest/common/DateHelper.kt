@@ -18,22 +18,22 @@ object DateHelper {
         calendar.time.time
     }
 
-    fun articleForThisWeek(article: Article) : Boolean {
-        if (article.publishedDateForDB <= Date().time && article.publishedDateForDB >= oneWeek){
+    fun articleForThisWeek(article: Article): Boolean {
+        if (article.publishedDateForDB <= Date().time && article.publishedDateForDB >= oneWeek) {
             return true
         }
         return false
     }
 
-    fun articleForLastWeek(article: Article) : Boolean {
-        if (article.publishedDateForDB in twoWeeks..oneWeek){
+    fun articleForLastWeek(article: Article): Boolean {
+        if (article.publishedDateForDB in twoWeeks..oneWeek) {
             return true
         }
         return false
     }
 
-    fun oldArticle(article: Article) : Boolean {
-        if (article.publishedDateForDB <= twoWeeks){
+    fun oldArticle(article: Article): Boolean {
+        if (article.publishedDateForDB <= twoWeeks) {
             return true
         }
         return false

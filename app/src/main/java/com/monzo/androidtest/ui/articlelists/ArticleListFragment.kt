@@ -79,40 +79,5 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
     override fun articleClicked(article: Article) {
         viewModel.onArticleClicked(article)
     }
-
-    //Todo
-    // Add more menu options to further improve the filtering process
-    // Include --
-    // Search by text
-    // Sort by ASC / DESC
-    // Potential use of pills to filter news articles based on section (i.e. football/politics)
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.article_menu, menu)
-//        val favouritesItem = menu.findItem(R.id.select_favourites)
-//        viewModel.showFavourites.observe(viewLifecycleOwner, Observer {isSelected ->
-//            if (isSelected) {
-//                favouritesItem.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
-//            } else {
-//                favouritesItem.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_non_favourite)
-//            }
-//            favouritesItem.isChecked = isSelected
-//        })
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.select_favourites -> {
-//                item.isChecked = !item.isChecked
-//                if (item.isChecked) {
-//                    item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
-//                } else {
-//                    item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_non_favourite)
-//                }
-//                viewModel.showFavourites(item.isChecked)
-//                return true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-
+    
 }

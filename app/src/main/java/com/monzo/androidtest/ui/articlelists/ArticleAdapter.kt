@@ -55,7 +55,7 @@ internal class ArticleAdapter(private val articleOnClickListener: ArticleOnClick
 
     interface ArticleOnClickListener {
         fun articleFavourited(article: Article, isFavourite: Boolean)
-        fun articleClicked(article: Article)
+        fun articleClicked(article: Article) {}
     }
 
     class ArticleDiffChecker() : DiffUtil.ItemCallback<Article>() {

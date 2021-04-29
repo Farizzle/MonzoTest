@@ -39,11 +39,13 @@ fun bindFavouriteArticle(imageView: ImageView, isFavourite: Boolean) {
 }
 
 @BindingAdapter("httpText")
-fun bindHttpText(textView: TextView, text: String) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT);
-    } else {
-        textView.text = Html.fromHtml(text);
+fun bindHttpText(textView: TextView, text: String?) {
+    text?.let {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            textView.text = Html.fromHtml(text);
+        }
     }
 }
 

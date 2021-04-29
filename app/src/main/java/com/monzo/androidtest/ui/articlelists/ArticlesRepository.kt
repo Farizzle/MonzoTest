@@ -70,12 +70,13 @@ class ArticlesRepository @Inject constructor(
         _detailStatus.postValue(GuardianApiStatus.LOADING)
         try {
             val articleDetailResponse = guardianService.getArticleAsync(article.url, "headline,thumbnail,body").await()
-            val apiArticle = articleDetailResponse.response.content.asDatabaseModel()
-            database.articleDao().update(apiArticle.copy(body = article.body, favourite = article.favourite))
+            val apiArticle = articleDetailResponse.response.content
+            val updatedArticle = article.copy(body = apiArticle.fields?.body)
+            database.articleDao().update(updatedArticle.asDatabaseModel())
             withContext(Dispatchers.Main) {
                 _detailStatus.postValue(GuardianApiStatus.SUCCESS)
             }
-            return apiArticle.asDomainModel()
+            return updatedArticle
         } catch (exception: Exception) {
             withContext(Dispatchers.Main) {
                 _detailStatus.postValue(GuardianApiStatus.ERROR)

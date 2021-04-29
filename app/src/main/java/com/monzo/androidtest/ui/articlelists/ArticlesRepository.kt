@@ -1,10 +1,16 @@
 package com.monzo.androidtest.ui.articlelists
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
 import com.monzo.androidtest.api.GuardianApiStatus
 import com.monzo.androidtest.api.GuardianService
 import com.monzo.androidtest.api.model.asDatabaseModel
+import com.monzo.androidtest.common.DateHelper.articleForLastWeek
+import com.monzo.androidtest.common.DateHelper.articleForThisWeek
+import com.monzo.androidtest.common.DateHelper.oldArticle
 import com.monzo.androidtest.database.ArticleDatabase
+import com.monzo.androidtest.database.model.asDomainModel
 import com.monzo.androidtest.domain.Article
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,6 +27,26 @@ class ArticlesRepository @Inject constructor(
 
     private val _detailStatus = MutableLiveData<GuardianApiStatus>()
     val detailStatus get() = _detailStatus
+
+    private val articles = database.articleDao().getArticles(false)
+    val favourites = Transformations.map(database.articleDao().getArticles(true).asLiveData()) { articles ->
+        articles.asDomainModel()
+    }
+    val thisWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
+        articles.asDomainModel().filter {
+            articleForThisWeek(it)
+        }
+    }
+    val lastWeeksArticles = Transformations.map(articles.asLiveData()) {articles ->
+        articles.asDomainModel().filter {
+            articleForLastWeek(it)
+        }
+    }
+    val olderArticles = Transformations.map(articles.asLiveData()) {articles ->
+        articles.asDomainModel().filter {
+            oldArticle(it)
+        }
+    }
 
     suspend fun getLatestFintechArticles() {
         _feedStatus.postValue(GuardianApiStatus.LOADING)

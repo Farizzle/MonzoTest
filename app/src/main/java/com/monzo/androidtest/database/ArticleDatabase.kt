@@ -17,7 +17,7 @@ interface ArticleDao {
     @Update
     suspend fun update(article: DBArticle)
 
-    @Query("SELECT * FROM article_table WHERE (favourite == :showFavourites OR favourite = 1) ORDER BY published DESC")
+    @Query("SELECT * FROM article_table WHERE (favourite == :showFavourites) ORDER BY published DESC")
     fun getArticles(showFavourites: Boolean = false): Flow<List<DBArticle>>
 
     @Query("SELECT * FROM article_table WHERE id == :articleId")

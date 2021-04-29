@@ -12,60 +12,80 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp">
 
-        <ImageView
-            android:id="@+id/article_image"
-            imageURL="@{articleProperty.thumbnail}"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:scaleType="centerCrop"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/article_image_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/article_title"
+            <ImageView
+                android:id="@+id/article_image"
+                imageURL="@{articleProperty.thumbnail}"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <RelativeLayout
+            android:id="@+id/article_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/roboto_bold"
-            android:maxLines="3"
-            android:text="@{articleProperty.title}"
-            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/article_image"
-            app:layout_constraintTop_toTopOf="@id/article_image" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/roboto"
-            android:text="@{articleProperty.sectionName}"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/article_title"
-            app:layout_constraintTop_toBottomOf="@+id/article_title" />
-
-        <TextView
-            android:id="@+id/article_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="@{articleProperty.publishedDateFormatted}"
-            android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/article_title" />
+            app:layout_constraintStart_toEndOf="@id/article_image_container"
+            app:layout_constraintTop_toTopOf="@id/article_image_container">
 
-        <ImageView
-            android:id="@+id/article_favourite_icon"
-            favouriteArticle="@{articleProperty.favourite}"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/article_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:maxLines="2"
+                android:text="@{articleProperty.title}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/article_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/roboto"
+                android:text="@{articleProperty.sectionName}"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp"
+                android:layout_below="@id/article_title"/>
+
+            <TextView
+                android:id="@+id/article_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="@{articleProperty.publishedDateFormatted}"
+                android:textSize="14dp"
+                android:layout_below="@id/article_type"/>
+
+            <ImageView
+                android:id="@+id/article_favourite_icon"
+                favouriteArticle="@{articleProperty.favourite}"
+                android:layout_width="30dp"
+                android:layout_alignTop="@id/article_type"
+                android:layout_alignBottom="@id/article_date"
+                android:layout_alignParentEnd="true"
+                android:layout_height="30dp" />
+
+        </RelativeLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

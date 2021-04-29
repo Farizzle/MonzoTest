@@ -1,11 +1,7 @@
 package com.monzo.androidtest.ui.articlelists
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -31,38 +27,55 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
 
     private fun setupBinding(view: View) {
         val binding = FragmentArticleListBinding.bind(view)
-        val articleAdapter = ArticleAdapter(this)
+        val favouritesAdapter = ArticleAdapter(this)
+        val thisWeekAdapter = ArticleAdapter(this)
+        val lastWeeksAdapter = ArticleAdapter(this)
+        val olderAdapter = ArticleAdapter(this)
         binding.apply {
             lifecycleOwner = this@ArticleListFragment
             articlesViewModel = viewModel
-            articlesRecyclerview.adapter = articleAdapter
+            favouritesRv.adapter = favouritesAdapter
+            thisWeekRv.adapter = thisWeekAdapter
+            lastWeekRv.adapter = lastWeeksAdapter
+            olderRv.adapter = olderAdapter
             articlesSwiperefreshlayout.setOnRefreshListener {
                 viewModel.onRefresh()
             }
         }
-        viewModel.articles.observe(viewLifecycleOwner, Observer {
-            articleAdapter.submitList(it)
+        viewModel.favouriteArticles.observe(viewLifecycleOwner, Observer { favourites ->
+            if (favourites.isEmpty()) {
+                binding.favouritesContainer.visibility = View.GONE
+            } else {
+                binding.favouritesContainer.visibility = View.VISIBLE
+            }
+        })
+        viewModel.thisWeeksArticle.observe(viewLifecycleOwner, Observer { thisWeeksArticles ->
+            if (thisWeeksArticles.isEmpty()) {
+                binding.thisWeekContainer.visibility = View.GONE
+            } else {
+                binding.thisWeekContainer.visibility = View.VISIBLE
+            }
+        })
+        viewModel.lastWeeksArticles.observe(viewLifecycleOwner, Observer { lastWeeksArticles ->
+            if (lastWeeksArticles.isEmpty()) {
+                binding.lastWeekContainer.visibility = View.GONE
+            } else {
+                binding.lastWeekContainer.visibility = View.VISIBLE
+            }
+        })
+        viewModel.olderArticles.observe(viewLifecycleOwner, Observer { olderArticle ->
+            if (olderArticle.isEmpty()) {
+                binding.olderContainer.visibility = View.GONE
+            } else {
+                binding.olderContainer.visibility = View.VISIBLE
+            }
         })
         viewModel.feedStatus.observe(viewLifecycleOwner, Observer { status ->
-            when (status) {
-                GuardianApiStatus.LOADING -> binding.articlesSwiperefreshlayout.isRefreshing = true
-                GuardianApiStatus.SUCCESS -> binding.articlesSwiperefreshlayout.isRefreshing = false
-                GuardianApiStatus.ERROR -> {
-                    binding.articlesSwiperefreshlayout.isRefreshing = false
-                    Snackbar.make(requireView(), "Oops! Something went wrong, pleasue check internet connection", Snackbar.LENGTH_LONG).show()
-                }
-            }
+            handleApiStatus(status, binding)
             viewModel.feedStatus.postValue(null)
         })
         viewModel.detailStatus.observe(viewLifecycleOwner, Observer { status ->
-            when (status) {
-                GuardianApiStatus.LOADING -> binding.articlesSwiperefreshlayout.isRefreshing = true
-                GuardianApiStatus.SUCCESS -> binding.articlesSwiperefreshlayout.isRefreshing = false
-                GuardianApiStatus.ERROR -> {
-                    binding.articlesSwiperefreshlayout.isRefreshing = false
-                    Snackbar.make(requireView(), "Oops! Something went wrong, pleasue check internet connection", Snackbar.LENGTH_LONG).show()
-                }
-            }
+            handleApiStatus(status, binding)
             viewModel.detailStatus.postValue(null)
         })
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -72,6 +85,17 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
                         findNavController().navigate(ArticleListFragmentDirections.actionArticleListFragmentToArticleDetailFragment(event.article))
                     }
                 }
+            }
+        }
+    }
+
+    private fun handleApiStatus(status: GuardianApiStatus?, binding: FragmentArticleListBinding) {
+        when (status) {
+            GuardianApiStatus.LOADING -> binding.articlesSwiperefreshlayout.isRefreshing = true
+            GuardianApiStatus.SUCCESS -> binding.articlesSwiperefreshlayout.isRefreshing = false
+            GuardianApiStatus.ERROR -> {
+                binding.articlesSwiperefreshlayout.isRefreshing = false
+                Snackbar.make(requireView(), "Oops! Something went wrong, pleasue check internet connection", Snackbar.LENGTH_LONG).show()
             }
         }
     }
@@ -90,33 +114,33 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
     // Search by text
     // Sort by ASC / DESC
     // Potential use of pills to filter news articles based on section (i.e. football/politics)
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.article_menu, menu)
-        val favouritesItem = menu.findItem(R.id.select_favourites)
-        viewModel.showFavourites.observe(viewLifecycleOwner, Observer {isSelected ->
-            if (isSelected) {
-                favouritesItem.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
-            } else {
-                favouritesItem.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_non_favourite)
-            }
-            favouritesItem.isChecked = isSelected
-        })
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.select_favourites -> {
-                item.isChecked = !item.isChecked
-                if (item.isChecked) {
-                    item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
-                } else {
-                    item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_non_favourite)
-                }
-                viewModel.showFavourites(item.isChecked)
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.article_menu, menu)
+//        val favouritesItem = menu.findItem(R.id.select_favourites)
+//        viewModel.showFavourites.observe(viewLifecycleOwner, Observer {isSelected ->
+//            if (isSelected) {
+//                favouritesItem.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
+//            } else {
+//                favouritesItem.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_non_favourite)
+//            }
+//            favouritesItem.isChecked = isSelected
+//        })
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.select_favourites -> {
+//                item.isChecked = !item.isChecked
+//                if (item.isChecked) {
+//                    item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_favourite)
+//                } else {
+//                    item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_non_favourite)
+//                }
+//                viewModel.showFavourites(item.isChecked)
+//                return true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
 }

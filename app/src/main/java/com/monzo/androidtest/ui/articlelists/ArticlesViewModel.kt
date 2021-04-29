@@ -11,40 +11,24 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ArticlesViewModel @ViewModelInject constructor(
         private val articlesDao: ArticleDao,
-        private val preferencesManager: PreferencesManager,
         private val repository: ArticlesRepository
 ) : ViewModel() {
 
     val feedStatus = repository.feedStatus
     val detailStatus = repository.detailStatus
 
-    private val _showFavourites = MutableLiveData<Boolean>()
-    val showFavourites: LiveData<Boolean>
-        get() = _showFavourites
-
-    val preferencesFlow = preferencesManager.preferencesFlow
-
     private val articleEventChannel = Channel<ArticleEvent>()
     val articleEvent = articleEventChannel.receiveAsFlow()
 
-    //Todo
-    // Using combines with other flows will allow further filtering if I was able to add search/tag/date filters
-    private val articlesFlow = preferencesFlow.flatMapLatest { showOnlyFavourites ->
-        _showFavourites.postValue(showOnlyFavourites.showFavourites)
-        articlesDao.getArticles(showOnlyFavourites.showFavourites)
-    }
-
-    val articles = articlesFlow.map {
-        it.asDomainModel()
-    }.asLiveData()
+    val favouriteArticles = repository.favourites
+    val thisWeeksArticle = repository.thisWeeksArticles
+    val lastWeeksArticles = repository.lastWeeksArticles
+    val olderArticles = repository.olderArticles
 
     private var coroutineJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineJob)
@@ -53,7 +37,6 @@ class ArticlesViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             repository.getLatestFintechArticles()
         }
-        _showFavourites.postValue(false)
     }
 
     fun onRefresh() {
@@ -74,12 +57,6 @@ class ArticlesViewModel @ViewModelInject constructor(
             }
         }
 
-    }
-
-
-    fun showFavourites(showFavourites: Boolean) = viewModelScope.launch {
-        preferencesManager.updateFavouritesSelected(showFavourites)
-        _showFavourites.postValue(showFavourites)
     }
 
     override fun onCleared() {

@@ -19,8 +19,6 @@
 - ListAdapter
 
 ## To Do
-- Hook up DI for detailFragment viewModel
-- Favouriting articles from detailFragment
 - Unit & Integration tests
 - Advanced filters
 	- Article sections

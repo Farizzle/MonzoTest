@@ -42,34 +42,6 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
                 viewModel.onRefresh()
             }
         }
-        viewModel.favouriteArticles.observe(viewLifecycleOwner, Observer { favourites ->
-            if (favourites.isEmpty()) {
-                binding.favouritesContainer.visibility = View.GONE
-            } else {
-                binding.favouritesContainer.visibility = View.VISIBLE
-            }
-        })
-        viewModel.thisWeeksArticle.observe(viewLifecycleOwner, Observer { thisWeeksArticles ->
-            if (thisWeeksArticles.isEmpty()) {
-                binding.thisWeekContainer.visibility = View.GONE
-            } else {
-                binding.thisWeekContainer.visibility = View.VISIBLE
-            }
-        })
-        viewModel.lastWeeksArticles.observe(viewLifecycleOwner, Observer { lastWeeksArticles ->
-            if (lastWeeksArticles.isEmpty()) {
-                binding.lastWeekContainer.visibility = View.GONE
-            } else {
-                binding.lastWeekContainer.visibility = View.VISIBLE
-            }
-        })
-        viewModel.olderArticles.observe(viewLifecycleOwner, Observer { olderArticle ->
-            if (olderArticle.isEmpty()) {
-                binding.olderContainer.visibility = View.GONE
-            } else {
-                binding.olderContainer.visibility = View.VISIBLE
-            }
-        })
         viewModel.feedStatus.observe(viewLifecycleOwner, Observer { status ->
             handleApiStatus(status, binding)
             viewModel.feedStatus.postValue(null)

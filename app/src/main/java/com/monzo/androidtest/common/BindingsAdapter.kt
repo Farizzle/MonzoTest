@@ -3,7 +3,9 @@ package com.monzo.androidtest.common
 import android.net.Uri
 import android.os.Build
 import android.text.Html
+import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -42,5 +44,16 @@ fun bindHttpText(textView: TextView, text: String) {
         textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT);
     } else {
         textView.text = Html.fromHtml(text);
+    }
+}
+
+@BindingAdapter("shouldShow")
+fun bindArticleContainer(linearLayout: LinearLayout, articles: List<Article>?) {
+    articles?.let {
+        if (articles.isEmpty()) {
+            linearLayout.visibility = View.GONE
+        } else {
+            linearLayout.visibility = View.VISIBLE
+        }
     }
 }

@@ -28,23 +28,23 @@ class ArticlesRepository @Inject constructor(
     private val _detailStatus = MutableLiveData<GuardianApiStatus>()
     val detailStatus get() = _detailStatus
 
-    private val articles = database.articleDao().getArticles(false)
-    val favourites = Transformations.map(database.articleDao().getArticles(true).asLiveData()) { articles ->
-        articles.asDomainModel()
+    private val articles = database.articleDao().getArticles()
+    val favourites = Transformations.map(articles.asLiveData()) { articles ->
+        articles.asDomainModel().filter { it.favourite == true }
     }
     val thisWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
         articles.asDomainModel().filter {
-            articleForThisWeek(it)
+            articleForThisWeek(it) && it.favourite == false
         }
     }
     val lastWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
         articles.asDomainModel().filter {
-            articleForLastWeek(it)
+            articleForLastWeek(it) && it.favourite == false
         }
     }
     val olderArticles = Transformations.map(articles.asLiveData()) { articles ->
         articles.asDomainModel().filter {
-            oldArticle(it)
+            oldArticle(it) && it.favourite == false
         }
     }
 

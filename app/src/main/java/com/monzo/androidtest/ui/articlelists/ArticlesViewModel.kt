@@ -73,16 +73,16 @@ class ArticlesViewModel @ViewModelInject constructor(
     init {
         viewModelScope.launch {
             if (searchQuery.value.isNullOrBlank()) {
-                repository.getLatestFintechArticles(null)
+                repository.getLatestArticlesList(null, null)
             } else {
-                repository.getLatestFintechArticles(searchQuery.value)
+                repository.getLatestArticlesList(searchQuery.value, sectionFilter.value)
             }
         }
     }
 
     fun onRefresh() {
         viewModelScope.launch {
-            repository.getLatestFintechArticles(searchQuery.value)
+            repository.getLatestArticlesList(searchQuery.value, sectionFilter.value)
         }
     }
 
@@ -99,7 +99,13 @@ class ArticlesViewModel @ViewModelInject constructor(
 
 
     fun onSearchQueryUpdated(query: String) = viewModelScope.launch {
-        repository.getLatestFintechArticles(query)
+        repository.getLatestArticlesList(query, sectionFilter.value)
+    }
+
+    fun onSectionFilterUpdated(sectionId: String?) = viewModelScope.launch {
+        sectionFilter.postValue(sectionId)
+        repository.getLatestArticlesList(searchQuery.value, sectionId)
+
     }
 
     override fun onCleared() {

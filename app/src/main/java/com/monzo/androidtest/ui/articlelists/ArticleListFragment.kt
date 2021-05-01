@@ -58,9 +58,9 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
                         val section = sections.findViewById<Chip>(sections.checkedChipId)
                         if (section != null) {
                             val sectionId = section.tag.toString()
-                            viewModel.sectionFilter.postValue(sectionId)
+                            viewModel.onSectionFilterUpdated(sectionId)
                         } else {
-                            viewModel.sectionFilter.postValue("")
+                            viewModel.onSectionFilterUpdated("")
                         }
                     }
 

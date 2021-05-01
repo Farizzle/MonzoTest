@@ -31,11 +31,15 @@ class ArticlesRepository @Inject constructor(
 
     val sections = database.articleDao().getSections()
 
-    suspend fun getLatestFintechArticles(searchTerm: String?) {
+    suspend fun getLatestArticlesList(searchTerm: String?, section: String?) {
         _feedStatus.postValue(GuardianApiStatus.LOADING)
+        var sectionId = section
+        if (section.isNullOrBlank()){
+            sectionId = null
+        }
         withContext(Dispatchers.IO) {
             try {
-                val articleResponse = guardianService.searchArticlesAsync(searchTerm).await()
+                val articleResponse = guardianService.searchArticlesAsync(searchTerm, sectionId).await()
                 withContext(Dispatchers.Main) {
                     _feedStatus.postValue(GuardianApiStatus.SUCCESS)
                 }

@@ -15,7 +15,7 @@ interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(vararg articles: DBArticle)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAllSections(vararg sections: DBSectionType)
 
     @Update

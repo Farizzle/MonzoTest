@@ -66,7 +66,7 @@ fun bindArticleContainer(linearLayout: LinearLayout, articles: List<Article>?) {
 
 @BindingAdapter("sectionChips")
 fun bindChipGroup(chipGroup: ChipGroup, listOfSections: List<SectionType>?) {
-    listOfSections?.let {safeChips ->
+    listOfSections?.let { safeChips ->
         for (chip in safeChips) {
             val layoutInflater = LayoutInflater.from(chipGroup.context)
             val sectionChip = ListItemSectionChipBinding.inflate(layoutInflater, chipGroup, false)

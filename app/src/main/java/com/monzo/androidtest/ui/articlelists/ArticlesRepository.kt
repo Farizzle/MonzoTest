@@ -28,31 +28,32 @@ class ArticlesRepository @Inject constructor(
     private val _detailStatus = MutableLiveData<GuardianApiStatus>()
     val detailStatus get() = _detailStatus
 
-    private val articles = database.articleDao().getArticles()
-    val favourites = Transformations.map(articles.asLiveData()) { articles ->
-        articles.asDomainModel().filter { it.favourite == true }
-    }
-    val thisWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
-        articles.asDomainModel().filter {
-            articleForThisWeek(it) && it.favourite == false
-        }
-    }
-    val lastWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
-        articles.asDomainModel().filter {
-            articleForLastWeek(it) && it.favourite == false
-        }
-    }
-    val olderArticles = Transformations.map(articles.asLiveData()) { articles ->
-        articles.asDomainModel().filter {
-            oldArticle(it) && it.favourite == false
-        }
-    }
+//    val articles = database.articleDao().getArticlesByQuery()
+//    val favouriteArticles = database.articleDao().getFavouriteArticles()
+//    val favourites = Transformations.map(articles.asLiveData()) { articles ->
+//        articles.asDomainModel().filter { it.favourite == true }
+//    }
+//    val thisWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
+//        articles.asDomainModel().filter {
+//            articleForThisWeek(it) && it.favourite == false
+//        }
+//    }
+//    val lastWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
+//        articles.asDomainModel().filter {
+//            articleForLastWeek(it) && it.favourite == false
+//        }
+//    }
+//    val olderArticles = Transformations.map(articles.asLiveData()) { articles ->
+//        articles.asDomainModel().filter {
+//            oldArticle(it) && it.favourite == false
+//        }
+//    }
 
-    suspend fun getLatestFintechArticles() {
+    suspend fun getLatestFintechArticles(searchTerm: String?) {
         _feedStatus.postValue(GuardianApiStatus.LOADING)
         withContext(Dispatchers.IO) {
             try {
-                val articleResponse = guardianService.searchArticlesAsync("fintech,brexit").await()
+                val articleResponse = guardianService.searchArticlesAsync(searchTerm).await()
                 withContext(Dispatchers.Main) {
                     _feedStatus.postValue(GuardianApiStatus.SUCCESS)
                 }

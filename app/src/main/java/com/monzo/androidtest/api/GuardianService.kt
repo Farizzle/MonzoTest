@@ -20,7 +20,7 @@ interface GuardianService {
     //Todo
     // Add pagination to this method + filters
     @GET("search?show-fields=headline,thumbnail&page-size=50")
-    fun searchArticlesAsync(@Query("q") searchTerm: String): Deferred<ApiArticleListResponse>
+    fun searchArticlesAsync(@Query("q") searchTerm: String?): Deferred<ApiArticleListResponse>
 
     @GET
     fun getArticleAsync(

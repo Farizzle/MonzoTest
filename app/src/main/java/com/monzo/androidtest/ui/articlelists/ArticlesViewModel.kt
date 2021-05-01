@@ -1,45 +1,73 @@
 package com.monzo.androidtest.ui.articlelists
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.monzo.androidtest.common.DateHelper
 import com.monzo.androidtest.database.ArticleDao
+import com.monzo.androidtest.database.model.asDomainModel
 import com.monzo.androidtest.domain.Article
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ArticlesViewModel @ViewModelInject constructor(
         private val articlesDao: ArticleDao,
-        private val repository: ArticlesRepository
+        private val repository: ArticlesRepository,
+        @Assisted private val state: SavedStateHandle
 ) : ViewModel() {
 
+    val searchQuery = state.getLiveData("seachQuery", "")
     val feedStatus = repository.feedStatus
     val detailStatus = repository.detailStatus
 
     private val articleEventChannel = Channel<ArticleEvent>()
     val articleEvent = articleEventChannel.receiveAsFlow()
 
-    val favouriteArticles = repository.favourites
-    val thisWeeksArticle = repository.thisWeeksArticles
-    val lastWeeksArticles = repository.lastWeeksArticles
-    val olderArticles = repository.olderArticles
+    private val articleFlow = searchQuery.asFlow().flatMapLatest { query ->
+            articlesDao.getArticlesByQuery(query, false)
+    }
+    private val favArticleFlow = searchQuery.asFlow().flatMapLatest {query ->
+        articlesDao.getArticlesByQuery(query, true)
+    }
+    val favouriteArticles = Transformations.map(favArticleFlow.asLiveData()) { articles ->
+        articles.asDomainModel()
+    }
+    val thisWeeksArticle = Transformations.map(articleFlow.asLiveData()) { articles ->
+        articles.asDomainModel().filter {
+            DateHelper.articleForThisWeek(it) && it.favourite == false
+        }
+    }
+    val lastWeeksArticles = Transformations.map(articleFlow.asLiveData()) { articles ->
+        articles.asDomainModel().filter {
+            DateHelper.articleForLastWeek(it) && it.favourite == false
+        }
+    }
+    val olderArticles = Transformations.map(articleFlow.asLiveData()) { articles ->
+        articles.asDomainModel().filter {
+            DateHelper.oldArticle(it) && it.favourite == false
+        }
+    }
 
     private var coroutineJob = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineJob)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + coroutineJob)
 
     init {
         viewModelScope.launch {
-            repository.getLatestFintechArticles()
+            if (searchQuery.value.isNullOrBlank()) {
+                repository.getLatestFintechArticles(null)
+            } else {
+                repository.getLatestFintechArticles(searchQuery.value)
+            }
         }
     }
 
     fun onRefresh() {
         viewModelScope.launch {
-            repository.getLatestFintechArticles()
+            repository.getLatestFintechArticles(searchQuery.value)
         }
     }
 
@@ -47,14 +75,16 @@ class ArticlesViewModel @ViewModelInject constructor(
         articlesDao.update(article.copy(favourite = isFavourited).asDatabaseModel())
     }
 
-    fun onArticleClicked(article: Article) {
-        coroutineScope.launch {
+    fun onArticleClicked(article: Article) = coroutineScope.launch {
             var updatedArticle = repository.getArticleDetails(article)
             if (updatedArticle.body != null) {
                 articleEventChannel.send(ArticleEvent.NavigateToArticleDetail(updatedArticle))
             }
         }
 
+
+    fun onSearchQueryUpdated(query: String) = viewModelScope.launch {
+        repository.getLatestFintechArticles(query)
     }
 
     override fun onCleared() {

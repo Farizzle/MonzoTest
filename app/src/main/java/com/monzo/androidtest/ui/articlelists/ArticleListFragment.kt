@@ -1,7 +1,10 @@
 package com.monzo.androidtest.ui.articlelists
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,7 +20,9 @@ import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAdapter.ArticleOnClickListener {
+
     private val viewModel: ArticlesViewModel by viewModels()
+    private lateinit var searchView: SearchView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,6 +37,7 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
         val lastWeeksAdapter = ArticleAdapter(this)
         val olderAdapter = ArticleAdapter(this)
         binding.apply {
+            articlesSwiperefreshlayout.isRefreshing = true
             lifecycleOwner = this@ArticleListFragment
             articlesViewModel = viewModel
             favouritesRv.adapter = favouritesAdapter
@@ -78,6 +84,35 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
 
     override fun articleClicked(article: Article) {
         viewModel.onArticleClicked(article)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.article_list_menu, menu)
+        setupSearchView(menu)
+    }
+
+    private fun setupSearchView(menu: Menu) {
+        val searchItem = menu.findItem(R.id.action_search)
+        searchView = searchItem.actionView as SearchView
+        val pendingQuery = viewModel.searchQuery.value
+        if (!pendingQuery.isNullOrBlank()) {
+            searchItem.expandActionView()
+            searchView.setQuery(pendingQuery, false)
+        }
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                if (!query.isNullOrBlank()) {
+                    viewModel.onSearchQueryUpdated(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.searchQuery.postValue(newText)
+                return true
+            }
+        })
     }
     
 }

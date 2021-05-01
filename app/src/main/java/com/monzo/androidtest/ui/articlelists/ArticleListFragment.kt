@@ -19,7 +19,9 @@ import com.monzo.androidtest.api.GuardianApiStatus
 import com.monzo.androidtest.databinding.FragmentArticleListBinding
 import com.monzo.androidtest.domain.Article
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAdapter.ArticleOnClickListener {
@@ -82,6 +84,15 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
                 }
             }
         }
+        viewModel.sectionFilter.observe(viewLifecycleOwner, Observer { filter ->
+            lifecycleScope.launch {
+                delay(100)
+                val chip = binding.articleSectionsGroup.findViewWithTag<Chip>(filter)
+                if(chip != null) {
+                    chip.isChecked = true
+                }
+            }
+        })
     }
 
     private fun handleApiStatus(status: GuardianApiStatus?, binding: FragmentArticleListBinding) {

@@ -51,6 +51,9 @@ class ArticlesViewModel @ViewModelInject constructor(
             DateHelper.oldArticle(it) && it.favourite == false
         }
     }
+    val sections = Transformations.map(repository.sections.asLiveData()) {
+        it.asDomainModel()
+    }
 
     private var coroutineJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + coroutineJob)

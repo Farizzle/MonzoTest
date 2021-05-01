@@ -16,164 +16,189 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/NestedScrollView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="16dp">
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/article_sections_group"
+                    style="@style/Widget.MaterialComponents.ChipGroup"
+                    sectionChips="@{articlesViewModel.sections}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    app:singleLine="true"
+                    app:singleSelection="true" />
+
+            </HorizontalScrollView>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/NestedScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/favourites_container"
                     android:layout_width="match_parent"
-                    shouldShow="@{articlesViewModel.favouriteArticles}"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:paddingTop="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="Favourites" />
-
-                    <com.google.android.material.card.MaterialCardView
+                    <LinearLayout
+                        android:id="@+id/favourites_container"
+                        shouldShow="@{articlesViewModel.favouriteArticles}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="24dp"
-                        app:cardCornerRadius="5dp"
-                        app:cardElevation="5dp">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/favourites_rv"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:text="Favourites" />
+
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:listData="@{articlesViewModel.favouriteArticles}" />
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="24dp"
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="5dp">
 
-                    </com.google.android.material.card.MaterialCardView>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/favourites_rv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:listData="@{articlesViewModel.favouriteArticles}" />
 
-                </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:id="@+id/this_week_container"
-                    android:layout_width="match_parent"
-                    shouldShow="@{articlesViewModel.thisWeeksArticle}"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="This week" />
-
-                    <com.google.android.material.card.MaterialCardView
+                    <LinearLayout
+                        android:id="@+id/this_week_container"
+                        shouldShow="@{articlesViewModel.thisWeeksArticle}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="24dp"
-                        app:cardCornerRadius="5dp"
-                        app:cardElevation="5dp">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/this_week_rv"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:text="This week" />
+
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:listData="@{articlesViewModel.thisWeeksArticle}" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="24dp"
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="5dp">
 
-                    </com.google.android.material.card.MaterialCardView>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/this_week_rv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:listData="@{articlesViewModel.thisWeeksArticle}" />
 
-                </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:id="@+id/last_week_container"
-                    android:layout_width="match_parent"
-                    shouldShow="@{articlesViewModel.lastWeeksArticles}"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="Last week" />
-
-                    <com.google.android.material.card.MaterialCardView
+                    <LinearLayout
+                        android:id="@+id/last_week_container"
+                        shouldShow="@{articlesViewModel.lastWeeksArticles}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="24dp"
-                        app:cardCornerRadius="5dp"
-                        app:cardElevation="5dp">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/last_week_rv"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:text="Last week" />
+
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:listData="@{articlesViewModel.lastWeeksArticles}" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="24dp"
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="5dp">
 
-                    </com.google.android.material.card.MaterialCardView>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/last_week_rv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:listData="@{articlesViewModel.lastWeeksArticles}" />
 
-                </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:id="@+id/older_container"
-                    android:layout_width="match_parent"
-                    shouldShow="@{articlesViewModel.olderArticles}"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    </LinearLayout>
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="Older" />
-
-                    <com.google.android.material.card.MaterialCardView
+                    <LinearLayout
+                        android:id="@+id/older_container"
+                        shouldShow="@{articlesViewModel.olderArticles}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="24dp"
-                        app:cardCornerRadius="5dp"
-                        app:cardElevation="5dp">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/older_rv"
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:text="Older" />
+
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:listData="@{articlesViewModel.olderArticles}" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="24dp"
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="5dp">
 
-                    </com.google.android.material.card.MaterialCardView>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/older_rv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:listData="@{articlesViewModel.olderArticles}" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
-        </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

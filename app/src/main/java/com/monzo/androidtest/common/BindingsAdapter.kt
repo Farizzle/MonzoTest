@@ -3,6 +3,7 @@ package com.monzo.androidtest.common
 import android.net.Uri
 import android.os.Build
 import android.text.Html
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -11,8 +12,11 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.ChipGroup
 import com.monzo.androidtest.R
+import com.monzo.androidtest.databinding.ListItemSectionChipBinding
 import com.monzo.androidtest.domain.Article
+import com.monzo.androidtest.domain.SectionType
 import com.monzo.androidtest.ui.articlelists.ArticleAdapter
 
 @BindingAdapter("listData")
@@ -56,6 +60,18 @@ fun bindArticleContainer(linearLayout: LinearLayout, articles: List<Article>?) {
             linearLayout.visibility = View.GONE
         } else {
             linearLayout.visibility = View.VISIBLE
+        }
+    }
+}
+
+@BindingAdapter("sectionChips")
+fun bindChipGroup(chipGroup: ChipGroup, listOfSections: List<SectionType>?) {
+    listOfSections?.let {safeChips ->
+        for (chip in safeChips) {
+            val layoutInflater = LayoutInflater.from(chipGroup.context)
+            val sectionChip = ListItemSectionChipBinding.inflate(layoutInflater, chipGroup, false)
+            sectionChip.sectionType = chip
+            chipGroup.addView(sectionChip.root)
         }
     }
 }

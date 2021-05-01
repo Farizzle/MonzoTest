@@ -6,4 +6,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SectionChipStyle" parent="@style/Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>
+        <item name="checkedIconTint">@color/white</item>
+        <item name="android:textColor">@color/text_color_state_list</item>
+    </style>
+
+
 </resources>

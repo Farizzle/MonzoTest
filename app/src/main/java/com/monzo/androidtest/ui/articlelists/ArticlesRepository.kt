@@ -10,6 +10,7 @@ import com.monzo.androidtest.common.DateHelper.articleForLastWeek
 import com.monzo.androidtest.common.DateHelper.articleForThisWeek
 import com.monzo.androidtest.common.DateHelper.oldArticle
 import com.monzo.androidtest.database.ArticleDatabase
+import com.monzo.androidtest.database.model.DBSectionType
 import com.monzo.androidtest.database.model.asDomainModel
 import com.monzo.androidtest.domain.Article
 import kotlinx.coroutines.Dispatchers
@@ -28,26 +29,7 @@ class ArticlesRepository @Inject constructor(
     private val _detailStatus = MutableLiveData<GuardianApiStatus>()
     val detailStatus get() = _detailStatus
 
-//    val articles = database.articleDao().getArticlesByQuery()
-//    val favouriteArticles = database.articleDao().getFavouriteArticles()
-//    val favourites = Transformations.map(articles.asLiveData()) { articles ->
-//        articles.asDomainModel().filter { it.favourite == true }
-//    }
-//    val thisWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
-//        articles.asDomainModel().filter {
-//            articleForThisWeek(it) && it.favourite == false
-//        }
-//    }
-//    val lastWeeksArticles = Transformations.map(articles.asLiveData()) { articles ->
-//        articles.asDomainModel().filter {
-//            articleForLastWeek(it) && it.favourite == false
-//        }
-//    }
-//    val olderArticles = Transformations.map(articles.asLiveData()) { articles ->
-//        articles.asDomainModel().filter {
-//            oldArticle(it) && it.favourite == false
-//        }
-//    }
+    val sections = database.articleDao().getSections()
 
     suspend fun getLatestFintechArticles(searchTerm: String?) {
         _feedStatus.postValue(GuardianApiStatus.LOADING)
@@ -57,6 +39,11 @@ class ArticlesRepository @Inject constructor(
                 withContext(Dispatchers.Main) {
                     _feedStatus.postValue(GuardianApiStatus.SUCCESS)
                 }
+                var articleSections = mutableSetOf<DBSectionType>()
+                for (article in articleResponse.response.results) {
+                    articleSections.add(DBSectionType(article.sectionId, article.sectionName))
+                }
+                database.articleDao().insertAllSections(*articleSections.toTypedArray())
                 database.articleDao().insertAll(*articleResponse.response.results.asDatabaseModel())
             } catch (exception: Exception) {
                 withContext(Dispatchers.Main) {

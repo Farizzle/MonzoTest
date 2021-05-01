@@ -1,6 +1,7 @@
 package com.monzo.androidtest.ui.articlelists
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -10,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
 import com.monzo.androidtest.R
 import com.monzo.androidtest.api.GuardianApiStatus
@@ -47,6 +50,20 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
             articlesSwiperefreshlayout.setOnRefreshListener {
                 viewModel.onRefresh()
             }
+            articleSectionsGroup.setOnCheckedChangeListener(object : ChipGroup.OnCheckedChangeListener {
+                override fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
+                    group?.let { sections ->
+                        val section = sections.findViewById<Chip>(sections.checkedChipId)
+                        if (section != null) {
+                            val sectionId = section.tag.toString()
+                            viewModel.sectionFilter.postValue(sectionId)
+                        } else {
+                            viewModel.sectionFilter.postValue("")
+                        }
+                    }
+
+                }
+            })
         }
         viewModel.feedStatus.observe(viewLifecycleOwner, Observer { status ->
             handleApiStatus(status, binding)
@@ -99,7 +116,7 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
             searchItem.expandActionView()
             searchView.setQuery(pendingQuery, false)
         }
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchView.clearFocus()
                 if (!query.isNullOrBlank()) {
@@ -114,5 +131,5 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
             }
         })
     }
-    
+
 }

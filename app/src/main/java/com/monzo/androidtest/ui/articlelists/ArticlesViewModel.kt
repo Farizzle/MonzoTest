@@ -21,17 +21,29 @@ class ArticlesViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     val searchQuery = state.getLiveData("seachQuery", "")
+    val sectionFilter = state.getLiveData("sectionFilter", "")
     val feedStatus = repository.feedStatus
     val detailStatus = repository.detailStatus
 
     private val articleEventChannel = Channel<ArticleEvent>()
     val articleEvent = articleEventChannel.receiveAsFlow()
 
-    private val articleFlow = searchQuery.asFlow().flatMapLatest { query ->
-            articlesDao.getArticlesByQuery(query, false)
+    private val articleFlow = combine(
+            searchQuery.asFlow(),
+            sectionFilter.asFlow()
+    ) { query, sectionFilter ->
+        Pair(query, sectionFilter)
+    }.flatMapLatest { (query, sectionFilter) ->
+        articlesDao.getArticlesByQuery(query, false, sectionFilter)
     }
-    private val favArticleFlow = searchQuery.asFlow().flatMapLatest {query ->
-        articlesDao.getArticlesByQuery(query, true)
+
+    private val favArticleFlow = combine(
+            searchQuery.asFlow(),
+            sectionFilter.asFlow()
+    ) { query, sectionFilter ->
+        Pair(query, sectionFilter)
+    }.flatMapLatest { (query, sectionFilter) ->
+        articlesDao.getArticlesByQuery(query, true, sectionFilter)
     }
     val favouriteArticles = Transformations.map(favArticleFlow.asLiveData()) { articles ->
         articles.asDomainModel()

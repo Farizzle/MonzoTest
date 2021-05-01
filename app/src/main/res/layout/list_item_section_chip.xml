@@ -7,6 +7,7 @@
    </data>
    <com.google.android.material.chip.Chip
        android:checkable="true"
+       android:tag="@{sectionType.id}"
        android:text="@{sectionType.type}"
        style="@style/SectionChipStyle"
        android:layout_width="wrap_content"

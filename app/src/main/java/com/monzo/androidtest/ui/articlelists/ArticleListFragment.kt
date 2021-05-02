@@ -1,7 +1,6 @@
 package com.monzo.androidtest.ui.articlelists
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -88,7 +87,7 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
             lifecycleScope.launch {
                 delay(100)
                 val chip = binding.articleSectionsGroup.findViewWithTag<Chip>(filter)
-                if(chip != null) {
+                if (chip != null) {
                     chip.isChecked = true
                 }
             }

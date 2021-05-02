@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monzo.androidtest.database.ArticleDao
 import com.monzo.androidtest.domain.Article
-import com.monzo.androidtest.ui.articlelists.ArticlesRepository
 import kotlinx.coroutines.launch
 
 //Todo
@@ -20,7 +19,7 @@ class ArticleDetailViewModel @ViewModelInject constructor(
 
     private val _favouriteSelected = MutableLiveData<Boolean>()
     val favouriteSelected: LiveData<Boolean>
-    get() = _favouriteSelected
+        get() = _favouriteSelected
 
     fun setup(article: Article) {
         this.article = article

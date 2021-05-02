@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-   <data>
-      <variable
-          name="sectionType"
-          type="com.monzo.androidtest.domain.SectionType" />
-   </data>
-   <com.google.android.material.chip.Chip
-       android:checkable="true"
-       android:tag="@{sectionType.id}"
-       android:text="@{sectionType.type}"
-       style="@style/SectionChipStyle"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"/>
+
+    <data>
+
+        <variable
+            name="sectionType"
+            type="com.monzo.androidtest.domain.SectionType" />
+    </data>
+
+    <com.google.android.material.chip.Chip
+        style="@style/SectionChipStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:tag="@{sectionType.id}"
+        android:text="@{sectionType.type}" />
 </layout>

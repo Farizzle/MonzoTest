@@ -11,7 +11,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class ArticlesViewModel @ViewModelInject constructor(
@@ -91,11 +93,11 @@ class ArticlesViewModel @ViewModelInject constructor(
     }
 
     fun onArticleClicked(article: Article) = coroutineScope.launch {
-            var updatedArticle = repository.getArticleDetails(article)
-            if (updatedArticle.body != null) {
-                articleEventChannel.send(ArticleEvent.NavigateToArticleDetail(updatedArticle))
-            }
+        var updatedArticle = repository.getArticleDetails(article)
+        if (updatedArticle.body != null) {
+            articleEventChannel.send(ArticleEvent.NavigateToArticleDetail(updatedArticle))
         }
+    }
 
 
     fun onSearchQueryUpdated(query: String) = viewModelScope.launch {

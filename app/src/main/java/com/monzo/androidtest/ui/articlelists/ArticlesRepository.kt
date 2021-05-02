@@ -1,17 +1,11 @@
 package com.monzo.androidtest.ui.articlelists
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.asLiveData
 import com.monzo.androidtest.api.GuardianApiStatus
 import com.monzo.androidtest.api.GuardianService
 import com.monzo.androidtest.api.model.asDatabaseModel
-import com.monzo.androidtest.common.DateHelper.articleForLastWeek
-import com.monzo.androidtest.common.DateHelper.articleForThisWeek
-import com.monzo.androidtest.common.DateHelper.oldArticle
 import com.monzo.androidtest.database.ArticleDatabase
 import com.monzo.androidtest.database.model.DBSectionType
-import com.monzo.androidtest.database.model.asDomainModel
 import com.monzo.androidtest.domain.Article
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,7 +28,7 @@ class ArticlesRepository @Inject constructor(
     suspend fun getLatestArticlesList(searchTerm: String?, section: String?) {
         _feedStatus.postValue(GuardianApiStatus.LOADING)
         var sectionId = section
-        if (section.isNullOrBlank()){
+        if (section.isNullOrBlank()) {
             sectionId = null
         }
         withContext(Dispatchers.IO) {

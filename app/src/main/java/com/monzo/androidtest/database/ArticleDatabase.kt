@@ -21,8 +21,8 @@ interface ArticleDao {
     @Update
     suspend fun update(article: DBArticle)
 
-    @Query("SELECT * FROM article_table WHERE (title LIKE '%' || :query || '%') AND (favourite == :favourites) AND (sectionId LIKE '%' || :section || '%') ORDER BY published DESC LIMIT 30")
-    fun getArticlesByQuery(query: String, favourites: Boolean, section: String): Flow<List<DBArticle>>
+    @Query("SELECT * FROM article_table WHERE (title LIKE '%' || :query || '%') AND (favourite == :favourites) AND (sectionId LIKE '%' || :section || '%') ORDER BY published DESC LIMIT 30 * :limit")
+    fun getArticlesByQuery(query: String, favourites: Boolean, section: String, limit: Int): Flow<List<DBArticle>>
 
     @Query("SELECT * FROM article_table WHERE id == :articleId")
     fun getSingleArticle(articleId: String): Flow<DBArticle>

@@ -62,7 +62,6 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
                             viewModel.onSectionFilterUpdated("")
                         }
                     }
-
                 }
             })
         }
@@ -83,6 +82,11 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list), ArticleAda
                 }
             }
         }
+        viewModel.currentPage.observe(viewLifecycleOwner, Observer { currentPage ->
+            if (currentPage == 1) {
+                binding.nestedScrollView.scrollTo(0, 0)
+            }
+        })
         viewModel.sectionFilter.observe(viewLifecycleOwner, Observer { filter ->
             lifecycleScope.launch {
                 delay(100)

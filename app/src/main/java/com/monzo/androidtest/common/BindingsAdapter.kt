@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -73,5 +74,12 @@ fun bindChipGroup(chipGroup: ChipGroup, listOfSections: List<SectionType>?) {
             sectionChip.sectionType = chip
             chipGroup.addView(sectionChip.root)
         }
+    }
+}
+
+@BindingAdapter("scrollListener")
+fun bindNestedViewScrollView(nestedScrollView: NestedScrollView, listener: NestedScrollView.OnScrollChangeListener?) {
+    listener?.let {
+        nestedScrollView.setOnScrollChangeListener(it)
     }
 }

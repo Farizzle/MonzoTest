@@ -1,5 +1,6 @@
 package com.monzo.androidtest.ui.articlelists
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.monzo.androidtest.api.GuardianApiStatus
 import com.monzo.androidtest.api.GuardianService
@@ -25,8 +26,9 @@ class ArticlesRepository @Inject constructor(
 
     val sections = database.articleDao().getSections()
 
-    suspend fun getLatestArticlesList(searchTerm: String?, section: String?) {
+    suspend fun getLatestArticlesList(searchTerm: String?, section: String?, currentPage: Int = 1) {
         _feedStatus.postValue(GuardianApiStatus.LOADING)
+        Log.e("FOORIS", "CURRENT PAGE - $currentPage")
         var sectionId = section
         var searchQuery = searchTerm
         if (section.isNullOrBlank()) {
@@ -37,8 +39,9 @@ class ArticlesRepository @Inject constructor(
         }
         withContext(Dispatchers.IO) {
             try {
-                val articleResponse = guardianService.searchArticlesAsync(searchQuery, sectionId).await()
+                val articleResponse = guardianService.searchArticlesAsync(searchQuery, sectionId, currentPage).await()
                 withContext(Dispatchers.Main) {
+                    Log.e("FOORIS", "PAYLOAD SIZE - ${articleResponse.response.results.size}")
                     _feedStatus.postValue(GuardianApiStatus.SUCCESS)
                 }
                 var articleSections = mutableSetOf<DBSectionType>()

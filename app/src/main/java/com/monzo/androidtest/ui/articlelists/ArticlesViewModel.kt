@@ -1,5 +1,7 @@
 package com.monzo.androidtest.ui.articlelists
 
+import android.util.Log
+import androidx.core.widget.NestedScrollView
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -24,6 +26,7 @@ class ArticlesViewModel @ViewModelInject constructor(
 
     val searchQuery = state.getLiveData("seachQuery", "")
     val sectionFilter = state.getLiveData("sectionFilter", "")
+    val currentPage = state.getLiveData("currentPage", 1)
     val feedStatus = repository.feedStatus
     val detailStatus = repository.detailStatus
 
@@ -32,20 +35,20 @@ class ArticlesViewModel @ViewModelInject constructor(
 
     private val articleFlow = combine(
             searchQuery.asFlow(),
-            sectionFilter.asFlow()
-    ) { query, sectionFilter ->
-        Pair(query, sectionFilter)
-    }.flatMapLatest { (query, sectionFilter) ->
-        articlesDao.getArticlesByQuery(query, false, sectionFilter)
+            sectionFilter.asFlow(),
+            currentPage.asFlow(),
+    ) { query, sectionFilter, currentPage ->
+        Triple(query, sectionFilter, currentPage)
+    }.flatMapLatest { (query, sectionFilter, currentPage) ->
+        articlesDao.getArticlesByQuery(query, false, sectionFilter, currentPage)
     }
-
     private val favArticleFlow = combine(
             searchQuery.asFlow(),
             sectionFilter.asFlow()
     ) { query, sectionFilter ->
         Pair(query, sectionFilter)
     }.flatMapLatest { (query, sectionFilter) ->
-        articlesDao.getArticlesByQuery(query, true, sectionFilter)
+        articlesDao.getArticlesByQuery(query, true, sectionFilter, 1)
     }
     val favouriteArticles = Transformations.map(favArticleFlow.asLiveData()) { articles ->
         articles.asDomainModel()
@@ -67,6 +70,16 @@ class ArticlesViewModel @ViewModelInject constructor(
     }
     val sections = Transformations.map(repository.sections.asLiveData()) {
         it.asDomainModel()
+    }
+
+    val scrollListener = NestedScrollView.OnScrollChangeListener { scrollView, _, scrollY, _, _ ->
+        if (scrollY == (scrollView.getChildAt(0).measuredHeight - scrollView.measuredHeight)) {
+            var nextPage = currentPage.value as Int
+            currentPage.postValue(++nextPage)
+            viewModelScope.launch {
+                repository.getLatestArticlesList(searchQuery.value, sectionFilter.value, nextPage)
+            }
+        }
     }
 
     private var coroutineJob = Job()
@@ -99,15 +112,15 @@ class ArticlesViewModel @ViewModelInject constructor(
         }
     }
 
-
     fun onSearchQueryUpdated(query: String) = viewModelScope.launch {
+        currentPage.postValue(1)
         repository.getLatestArticlesList(query, sectionFilter.value)
     }
 
     fun onSectionFilterUpdated(sectionId: String?) = viewModelScope.launch {
         sectionFilter.postValue(sectionId)
+        currentPage.postValue(1)
         repository.getLatestArticlesList(searchQuery.value, sectionId)
-
     }
 
     override fun onCleared() {

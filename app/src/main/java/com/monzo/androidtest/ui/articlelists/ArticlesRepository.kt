@@ -28,12 +28,16 @@ class ArticlesRepository @Inject constructor(
     suspend fun getLatestArticlesList(searchTerm: String?, section: String?) {
         _feedStatus.postValue(GuardianApiStatus.LOADING)
         var sectionId = section
+        var searchQuery = searchTerm
         if (section.isNullOrBlank()) {
             sectionId = null
         }
+        if (searchTerm.isNullOrBlank()) {
+            searchQuery = null
+        }
         withContext(Dispatchers.IO) {
             try {
-                val articleResponse = guardianService.searchArticlesAsync(searchTerm, sectionId).await()
+                val articleResponse = guardianService.searchArticlesAsync(searchQuery, sectionId).await()
                 withContext(Dispatchers.Main) {
                     _feedStatus.postValue(GuardianApiStatus.SUCCESS)
                 }

@@ -7,8 +7,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.monzo.androidtest.data.db.DBArticle
-import com.monzo.androidtest.data.db.DBSectionType
+import com.monzo.androidtest.database.model.DBArticle
+import com.monzo.androidtest.database.model.DBSectionType
 import com.monzo.androidtest.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

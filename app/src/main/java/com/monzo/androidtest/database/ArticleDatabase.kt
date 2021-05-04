@@ -12,11 +12,10 @@ abstract class ArticleDatabase : RoomDatabase() {
 
 @Dao
 interface ArticleDao {
+
+    // ARTICLES
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(vararg articles: DBArticle)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAllSections(vararg sections: DBSectionType)
 
     @Update
     suspend fun update(article: DBArticle)
@@ -25,8 +24,13 @@ interface ArticleDao {
     fun getArticlesByQuery(query: String, favourites: Boolean, section: String, limit: Int): Flow<List<DBArticle>>
 
     @Query("SELECT * FROM article_table WHERE id == :articleId")
-    fun getSingleArticle(articleId: String): Flow<DBArticle>
+    fun getSingleArticle(articleId: String): LiveData<DBArticle>
+
+    // SECTIONS
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAllSections(vararg sections: DBSectionType)
 
     @Query("SELECT * FROM section_table ORDER BY type ASC")
     fun getSections(): Flow<List<DBSectionType>>
+
 }

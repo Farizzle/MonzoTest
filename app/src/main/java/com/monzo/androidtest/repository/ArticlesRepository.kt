@@ -28,7 +28,6 @@ class ArticlesRepository @Inject constructor(
 
     suspend fun getLatestArticlesList(searchTerm: String?, section: String?, currentPage: Int = 1) {
         _feedStatus.postValue(GuardianApiStatus.LOADING)
-        Log.e("FOORIS", "CURRENT PAGE - $currentPage")
         var sectionId = section
         var searchQuery = searchTerm
         if (section.isNullOrBlank()) {
@@ -41,7 +40,6 @@ class ArticlesRepository @Inject constructor(
             try {
                 val articleResponse = guardianService.searchArticlesAsync(searchQuery, sectionId, currentPage).await()
                 withContext(Dispatchers.Main) {
-                    Log.e("FOORIS", "PAYLOAD SIZE - ${articleResponse.response.results.size}")
                     _feedStatus.postValue(GuardianApiStatus.SUCCESS)
                 }
                 var articleSections = mutableSetOf<DBSectionType>()

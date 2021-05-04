@@ -1,4 +1,4 @@
-package com.monzo.androidtest.api.model
+package com.monzo.androidtest.data.api
 
 import com.squareup.moshi.JsonClass
 

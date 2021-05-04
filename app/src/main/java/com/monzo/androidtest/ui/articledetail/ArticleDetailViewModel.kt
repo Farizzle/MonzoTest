@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monzo.androidtest.database.ArticleDao
-import com.monzo.androidtest.domain.Article
+import com.monzo.androidtest.data.domain.Article
 import kotlinx.coroutines.launch
 
 //Todo

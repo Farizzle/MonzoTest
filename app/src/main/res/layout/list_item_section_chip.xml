@@ -5,7 +5,7 @@
 
         <variable
             name="sectionType"
-            type="com.monzo.androidtest.domain.SectionType" />
+            type="com.monzo.androidtest.data.domain.SectionType" />
     </data>
 
     <com.google.android.material.chip.Chip

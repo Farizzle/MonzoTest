@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_article_detail">
         <argument
             android:name="article"
-            app:argType="com.monzo.androidtest.domain.Article" />
+            app:argType="com.monzo.androidtest.data.domain.Article" />
     </fragment>
 </navigation>

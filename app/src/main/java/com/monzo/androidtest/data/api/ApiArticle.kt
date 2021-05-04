@@ -1,6 +1,6 @@
-package com.monzo.androidtest.api.model
+package com.monzo.androidtest.data.api
 
-import com.monzo.androidtest.database.model.DBArticle
+import com.monzo.androidtest.data.db.DBArticle
 import com.squareup.moshi.JsonClass
 import java.util.*
 

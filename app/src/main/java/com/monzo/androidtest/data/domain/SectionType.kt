@@ -1,4 +1,4 @@
-package com.monzo.androidtest.domain
+package com.monzo.androidtest.data.domain
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

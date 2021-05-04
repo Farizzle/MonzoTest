@@ -16,7 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.monzo.androidtest.R
 import com.monzo.androidtest.api.GuardianApiStatus
 import com.monzo.androidtest.databinding.FragmentArticleListBinding
-import com.monzo.androidtest.domain.Article
+import com.monzo.androidtest.data.domain.Article
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect

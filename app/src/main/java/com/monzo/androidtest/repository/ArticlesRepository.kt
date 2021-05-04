@@ -1,13 +1,13 @@
-package com.monzo.androidtest.ui.articlelists
+package com.monzo.androidtest.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.monzo.androidtest.api.GuardianApiStatus
 import com.monzo.androidtest.api.GuardianService
-import com.monzo.androidtest.api.model.asDatabaseModel
+import com.monzo.androidtest.data.api.asDatabaseModel
 import com.monzo.androidtest.database.ArticleDatabase
-import com.monzo.androidtest.database.model.DBSectionType
-import com.monzo.androidtest.domain.Article
+import com.monzo.androidtest.data.db.DBSectionType
+import com.monzo.androidtest.data.domain.Article
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

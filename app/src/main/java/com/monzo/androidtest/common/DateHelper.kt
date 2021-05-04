@@ -1,6 +1,6 @@
 package com.monzo.androidtest.common
 
-import com.monzo.androidtest.domain.Article
+import com.monzo.androidtest.data.domain.Article
 import java.util.*
 
 object DateHelper {

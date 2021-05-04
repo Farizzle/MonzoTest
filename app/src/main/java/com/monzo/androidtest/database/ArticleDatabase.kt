@@ -2,8 +2,8 @@ package com.monzo.androidtest.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.monzo.androidtest.database.model.DBArticle
-import com.monzo.androidtest.database.model.DBSectionType
+import com.monzo.androidtest.data.db.DBArticle
+import com.monzo.androidtest.data.db.DBSectionType
 import kotlinx.coroutines.flow.Flow
 
 @Database(entities = [DBArticle::class, DBSectionType::class], version = 1, exportSchema = false)

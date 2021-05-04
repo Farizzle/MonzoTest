@@ -16,8 +16,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.chip.ChipGroup
 import com.monzo.androidtest.R
 import com.monzo.androidtest.databinding.ListItemSectionChipBinding
-import com.monzo.androidtest.domain.Article
-import com.monzo.androidtest.domain.SectionType
+import com.monzo.androidtest.data.domain.Article
+import com.monzo.androidtest.data.domain.SectionType
 import com.monzo.androidtest.ui.articlelists.ArticleAdapter
 
 @BindingAdapter("listData")

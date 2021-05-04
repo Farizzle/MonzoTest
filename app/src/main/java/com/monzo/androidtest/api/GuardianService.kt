@@ -1,7 +1,7 @@
 package com.monzo.androidtest.api
 
-import com.monzo.androidtest.api.model.ApiArticleListResponse
-import com.monzo.androidtest.api.model.ApiArticleResponse
+import com.monzo.androidtest.data.api.ApiArticleListResponse
+import com.monzo.androidtest.data.api.ApiArticleResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query

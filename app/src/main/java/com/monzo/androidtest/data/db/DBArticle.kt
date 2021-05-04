@@ -1,9 +1,9 @@
-package com.monzo.androidtest.database.model
+package com.monzo.androidtest.data.db
 
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.monzo.androidtest.domain.Article
+import com.monzo.androidtest.data.domain.Article
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 

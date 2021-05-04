@@ -6,7 +6,7 @@
 
         <variable
             name="articleProperty"
-            type="com.monzo.androidtest.domain.Article" />
+            type="com.monzo.androidtest.data.domain.Article" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

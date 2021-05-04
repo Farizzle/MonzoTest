@@ -1,7 +1,7 @@
-package com.monzo.androidtest.domain
+package com.monzo.androidtest.data.domain
 
 import android.os.Parcelable
-import com.monzo.androidtest.database.model.DBArticle
+import com.monzo.androidtest.data.db.DBArticle
 import kotlinx.android.parcel.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*

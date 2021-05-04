@@ -5,9 +5,9 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.monzo.androidtest.common.DateHelper
-import com.monzo.androidtest.database.ArticleDao
 import com.monzo.androidtest.data.db.asDomainModel
 import com.monzo.androidtest.data.domain.Article
+import com.monzo.androidtest.database.ArticleDao
 import com.monzo.androidtest.repository.ArticlesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.monzo.androidtest.databinding.ListItemArticleBinding
 import com.monzo.androidtest.data.domain.Article
+import com.monzo.androidtest.databinding.ListItemArticleBinding
 
 internal class ArticleAdapter(private val articleOnClickListener: ArticleOnClickListener) : ListAdapter<Article, ArticleAdapter.ArticleViewHolder>(ArticleDiffChecker()) {
 

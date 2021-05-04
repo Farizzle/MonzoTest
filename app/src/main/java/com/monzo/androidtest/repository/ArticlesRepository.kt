@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.monzo.androidtest.api.GuardianApiStatus
 import com.monzo.androidtest.api.GuardianService
 import com.monzo.androidtest.data.api.asDatabaseModel
-import com.monzo.androidtest.database.ArticleDatabase
 import com.monzo.androidtest.data.db.DBSectionType
 import com.monzo.androidtest.data.domain.Article
+import com.monzo.androidtest.database.ArticleDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

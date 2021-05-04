@@ -74,7 +74,7 @@ class ArticleDaoTest {
         val articleToUpdate = dao.getSingleArticle("test-id").getOrAwaitValue()
         dao.update(articleToUpdate.copy(favourite = true))
         val updatedArticle = dao.getSingleArticle("test-id").getOrAwaitValue()
-        if (updatedArticle.id == article.id){
+        if (updatedArticle.id == article.id) {
             assertThat(updatedArticle.favourite != article.favourite)
         }
     }
